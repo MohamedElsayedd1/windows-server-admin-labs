@@ -50,7 +50,7 @@ These steps are performed while **both DCs are online**.
 
 **Screenshot:**
 
-![Task 1 – Transfer RID Role](1777374967492_task1-transfer-rid-to-adc.png)
+![Task 1 – Transfer RID Role](task1-transfer-rid-to-adc.png)
 
 > ✅ **Expected Result:** Dialog reads *"The operations master role was successfully transferred."* The Operations master field now shows `ADC.test.local`.
 
