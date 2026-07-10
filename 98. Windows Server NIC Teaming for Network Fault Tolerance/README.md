@@ -45,7 +45,7 @@ Since this lab runs on a virtualized server, multiple virtual **Network Adapters
 - **Network Adapter 2** — Custom (VMnet1)
 - **Network Adapter 3** — Custom (VMnet1)
 
-![Add Network Adapters to VM](task2-add-network-adapters-vm.png)
+![Add Network Adapters to VM](task2-create-3-nic-on-pdc.png)
 
 **Why:** NIC Teaming operates at the OS level on top of whatever physical (or virtual) NICs Windows can see — so before any teaming can be configured inside Windows Server, the hypervisor must first present multiple separate virtual NICs to the guest OS. All three adapters are attached to the same virtual network (`VMnet1`) to simulate multiple physical links reaching the same switch.
 
@@ -61,7 +61,7 @@ In **Server Manager → Local Server → NIC Teaming**, open **Tasks → New Tea
   - ☑ `LAN2` (1 Gbps)
   - ☑ `vEthernet (EXT-SWITCH)` (Disabled) — *shown selected by default but should be excluded, see Task 4*
 
-![Create New Team](task3-new-team-server-manager.png)
+![Create New Team](task3-create-new-team.png)
 
 **Why:** This is the primary interface for creating a software NIC team on Windows Server — it lets you group two or more detected network adapters under one team name that will later present a single virtual "Team" interface to the OS.
 
@@ -76,7 +76,7 @@ Expanding **Additional properties** in the New team dialog exposes the teaming b
 - **Standby adapter:** `None (all adapters Active)`
 - **Primary team interface:** *(Name generated automatically); Default VLAN*
 
-![Additional Team Properties](task4-new-team-additional-properties.png)
+![Additional Team Properties](task4-additional-props.png)
 
 **Configuration choices explained:**
 | Setting | Value | Why |
@@ -97,7 +97,7 @@ After the team is created, Windows presents `TEAM0` as a standard network connec
 - **IPv4 Subnet Mask:** `255.255.255.0`
 - **IPv4 Default Gateway:** `192.168.1.1`
 
-![TEAM0 Status Details](task05-team0-status-details.png)
+![TEAM0 Status Details](task5-virtual-nic-status.png)
 
 **Why:** The **Microsoft Network Adapter Multiplexor Driver** is the virtual adapter Windows creates to represent the team as a whole — this is the interface that gets the IP configuration, not the individual member NICs. Both `LAN` and `LAN2` share this single team-level IP and MAC identity for the network's perspective.
 
@@ -117,7 +117,7 @@ Reply from 192.168.1.30: bytes=32 time<1ms TTL=127
 ...
 ```
 
-![Ping Continues When NIC Goes Down](task06-ping-continues-nic-down.png)
+![Ping Continues When NIC Goes Down](task6-pings-even-when-nic-is-down.png)
 
 **Why:** This is the entire point of NIC teaming — traffic transparently continues over the remaining active adapter (`LAN2`) with **zero packet loss** and no IP address change. (Note the subtle TTL shift from `128` to `127` partway through — this can happen when the failover changes the network path slightly, e.g. traversing through a different virtual switch hop, but the connection itself never drops.)
 
@@ -132,7 +132,7 @@ Back in the **NIC Teaming** console, the team and server now show a **Warning** 
 | `LAN` | Disabled | ❌ **Faulted** | *Not found* |
 | `LAN2` | 1 Gbps | ✅ **Active** | — |
 
-![NIC Teaming Console - Faulted Adapter](task07-nic-teaming-console-faulted.png)
+![NIC Teaming Console - Faulted Adapter](task7-nic-is-down.png)
 
 **Why:** This confirms, from the teaming management console's perspective, that the failure was correctly detected (`LAN` shows Faulted / Not found) while the team as a whole kept functioning because `LAN2` remained Active — exactly matching what the uninterrupted ping test in Task 6 demonstrated. The **Warning** status at the server/team level is expected and correct: it's alerting the admin that redundancy is currently reduced (only 1 of 2 members active), not that the network is down.
 
