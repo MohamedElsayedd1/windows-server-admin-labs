@@ -34,7 +34,7 @@ Open **Routing and Remote Access** → right-click the server → **Configure an
 
 > **Secure connection between two private networks** — *"Connect this network to a remote network, such as a branch office."*
 
-![RRAS Setup - Secure Connection](task01-rras-config-secure-connection.png)
+![RRAS Setup - Secure Connection](task1-enable-site-to-site-vpn.png)
 
 **Why:** This is the purpose-built RRAS wizard option for site-to-site (router-to-router) VPNs. It automatically configures the server to accept and initiate demand-dial connections rather than end-user remote access.
 
@@ -44,7 +44,7 @@ Open **Routing and Remote Access** → right-click the server → **Configure an
 
 Instead of the wizard's guided option, you can alternatively pick **Custom configuration** to manually select exactly which RRAS services to enable:
 
-![RRAS Setup - Custom Configuration](task02-rras-config-custom.png)
+![RRAS Setup - Custom Configuration](task2-enable-site-to-site-vpn-method1-2.png)
 
 On the **Custom Configuration** page, check:
 - ☑ **VPN access**
@@ -52,7 +52,7 @@ On the **Custom Configuration** page, check:
 
 (Leave NAT and LAN routing unchecked unless also needed.)
 
-![Custom Configuration - Select Services](task02b-custom-config-services.png)
+![Custom Configuration - Select Services](task2-enable-site-to-site-vpn-method1.png)
 
 **Why:** Custom configuration gives more granular control — useful if the server also needs other roles later, or if you want to enable demand-dial routing without the wizard forcing other unrelated services on.
 
@@ -66,7 +66,7 @@ Open the RRAS server's **Properties → IPv4** tab and confirm **Enable IPv4 For
 - **End IP address:** `192.168.1.130`
 - **Number of addresses:** `20`
 
-![IPv4 Address Range](task03-ipv4-address-range.png)
+![IPv4 Address Range](task3-add-ip-ranges-on-both-sites.png)
 
 **Why:** **IPv4 Forwarding** must be enabled for the server to route traffic *between* the two connected networks (not just terminate VPN sessions) — this is what makes it function as a router, not just a remote-access endpoint. This same step is performed on **both** sites, each using its own local subnet.
 
@@ -79,7 +79,7 @@ In **Routing and Remote Access → Network Interfaces**, right-click → **New D
 ### 4a. Interface Name
 Give the interface a friendly name — typically named after the remote site/router it connects to, e.g. `site2`.
 
-![Interface Name](task04h-interface-name.png)
+![Interface Name](task4-create-new-demand-dial-credentials.png)
 
 ### 4b. Connection Type
 Select **Connect using virtual private networking (VPN)** (as opposed to a modem or PPPoE device).
@@ -89,7 +89,7 @@ Select **Connect using virtual private networking (VPN)** (as opposed to a modem
 ### 4c. VPN Type
 Select **IKEv2**.
 
-![VPN Type - IKEv2](task04d-vpn-type-ikev2.png)
+![VPN Type - IKEv2](task4-create-new-demand-dial-dest-add.png)
 
 **Why IKEv2:** It supports strong pre-shared key or certificate-based authentication, handles connection re-establishment well (important for a persistent site-to-site link), and is well suited for router-to-router tunnels.
 
@@ -100,14 +100,14 @@ Enter the remote router's reachable host name or IP address — in this lab, Sit
 11.0.0.3
 ```
 
-![Destination Address](task04b-destination-address.png)
+![Destination Address](task4-create-new-demand-dial-dial-out-credentials.png)
 
 ### 4e. Protocols and Security
 Check:
 - ☑ **Route IP packets on this interface**
 - ☑ **Add a user account so a remote router can dial in**
 
-![Protocols and Security](task04f-protocols-and-security.png)
+![Protocols and Security](task4-create-new-demand-dial-ikv2.png)
 
 **Why:** "Route IP packets" enables this interface to forward traffic for the remote subnet. "Add a user account so a remote router can dial in" creates the local account the *other* site will use as its dial-out credentials when initiating the connection in the opposite direction.
 
@@ -116,14 +116,14 @@ Set the username/password that the **remote** router will use when it dials **in
 
 - **User name:** `site2`
 
-![Dial-In Credentials](task04a-dial-in-credentials.png)
+![Dial-In Credentials](task4-create-new-demand-dial-interface.png)
 
 ### 4g. Dial-Out Credentials
 Set the username/password this interface will use when dialing **out to** the remote router. These must exactly match the dial-in credentials configured on the *remote* side:
 
 - **User name:** `site1`
 
-![Dial-Out Credentials](task04c-dial-out-credentials.png)
+![Dial-Out Credentials](task4-create-new-demand-dial-security.png)
 
 **Why both credential sets:** In a router-to-router VPN, authentication happens in both directions — the account matters because either side may be the one to initiate ("dial") the connection.
 
@@ -134,7 +134,7 @@ Add a static route so this router knows how to reach the *remote* site's LAN sub
 - **Network Mask:** `255.255.255.0`
 - **Metric:** `10`
 
-![Static Route](task04g-static-route.png)
+![Static Route](task4-create-new-demand-dial-static-route.png)
 
 > ⚠️ **Note:** the screenshot shows a mask of `255.225.255.0`, which is a typo — the correct subnet mask for a standard `/24` network is **`255.255.255.0`**. Double check this field carefully when configuring your own routers, as a mistyped mask will silently break routing to the remote subnet.
 
@@ -148,7 +148,7 @@ Open the demand-dial interface's **Properties → Options** tab and set:
 
 - **Connection type:** **Persistent connection** (instead of *Demand-dial*)
 
-![Persistent Connection](task05-persistent-connection.png)
+![Persistent Connection](task4-create-new-demand-dial-vpn.png)
 
 **Why:** By default, a demand-dial interface connects only when there's traffic to send and disconnects after an idle timeout. For a site-to-site link that should always be available (e.g., for site-to-site application traffic, monitoring, or low-latency access), setting it to **Persistent** keeps the tunnel up permanently and automatically redials if it drops.
 
@@ -163,7 +163,8 @@ Open the interface's **Properties → Security** tab:
 - **Authentication:** select **Use preshared key for authentication**
 - **Key:** enter the same shared secret configured identically on **both** sites, e.g. `12341234`
 
-![Pre-shared Key Authentication](task06-preshared-key-auth.png)
+![Pre-shared Key Authentication](task5-presistent-connection.png)
+![Pre-shared Key Authentication](task6-presharedkey-auth-on-both-sites.png)
 
 **Why:** IKEv2 needs a shared authentication method between both endpoints. A pre-shared key is the simplest option for a lab/small deployment (versus deploying machine certificates on each router). **This exact key must match on both routers**, or the IKE security association will fail to establish.
 
@@ -177,7 +178,7 @@ Back in the **Network Interfaces** view of Routing and Remote Access, confirm th
 |---|---|---|---|
 | `site2` | Demand-dial | Enabled | **Connected** |
 
-![VPN Established](task07-vpn-established.png)
+![VPN Established](task7-vpn-established.png)
 
 **Why:** This confirms the IKEv2 tunnel and PPP negotiation completed successfully and the interface is actively passing traffic (not just configured, but genuinely up).
 
@@ -202,7 +203,7 @@ Approximate round trip times in milli-seconds:
     Minimum = 0ms, Maximum = 1ms, Average = 0ms
 ```
 
-![Sites Can Reach Each Other](task08-sites-reach-each-other.png)
+![Sites Can Reach Each Other](task8-sites-can-reach-each-other.png)
 
 **Result:** 0% packet loss confirms the site-to-site VPN tunnel is fully operational, routing between `192.168.1.0/24` and `192.168.2.0/24` is correctly configured, and traffic is passing through the IKEv2 demand-dial interface as expected.
 
