@@ -1,0 +1,6 @@
+FirstName,LastName,SamAccountName,UserPrincipalName,OU,Password
+Alice,Baker,abaker,abaker@dc.local,"OU=CRM,DC=DC,DC=local",Welcome2024!
+Charlie,Davis,cdavis,cdavis@dc.local,"OU=CRM,DC=DC,DC=local",Pass9876#
+Edward,Fisher,efisher,efisher@dc.local,"OU=CRM,DC=DC,DC=local",Secure001!
+Grace,Hill,ghill,ghill@dc.local,"OU=CRM,DC=DC,DC=local",Summer2024@
+Isaac,Jones,ijones,ijones@dc.local,"OU=CRM,DC=DC,DC=local",BlueSky456!
