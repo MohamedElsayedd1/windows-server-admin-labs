@@ -31,7 +31,7 @@ This lab documents how to configure **NIC Teaming** on a Windows Server (`PDC16`
 
 Conceptually, NIC teaming connects **multiple physical network cables** from a server to a switch (or multiple switches), which Windows then presents to the OS and applications as a **single logical network interface**.
 
-![NIC Teaming Topology](task01-nic-teaming-topology.png)
+![NIC Teaming Topology](task1-nic-teaming-topology.png)
 
 **Why:** Instead of the server relying on a single NIC (and single cable/switch port) as a point of failure, teaming multiple NICs means that if one physical link, cable, or switch port fails, traffic automatically continues to flow over the remaining team member(s) — with no IP address change and (ideally) no interruption visible to applications or users.
 
@@ -45,7 +45,7 @@ Since this lab runs on a virtualized server, multiple virtual **Network Adapters
 - **Network Adapter 2** — Custom (VMnet1)
 - **Network Adapter 3** — Custom (VMnet1)
 
-![Add Network Adapters to VM](task02-add-network-adapters-vm.png)
+![Add Network Adapters to VM](task2-add-network-adapters-vm.png)
 
 **Why:** NIC Teaming operates at the OS level on top of whatever physical (or virtual) NICs Windows can see — so before any teaming can be configured inside Windows Server, the hypervisor must first present multiple separate virtual NICs to the guest OS. All three adapters are attached to the same virtual network (`VMnet1`) to simulate multiple physical links reaching the same switch.
 
@@ -61,7 +61,7 @@ In **Server Manager → Local Server → NIC Teaming**, open **Tasks → New Tea
   - ☑ `LAN2` (1 Gbps)
   - ☑ `vEthernet (EXT-SWITCH)` (Disabled) — *shown selected by default but should be excluded, see Task 4*
 
-![Create New Team](task03-new-team-server-manager.png)
+![Create New Team](task3-new-team-server-manager.png)
 
 **Why:** This is the primary interface for creating a software NIC team on Windows Server — it lets you group two or more detected network adapters under one team name that will later present a single virtual "Team" interface to the OS.
 
@@ -76,7 +76,7 @@ Expanding **Additional properties** in the New team dialog exposes the teaming b
 - **Standby adapter:** `None (all adapters Active)`
 - **Primary team interface:** *(Name generated automatically); Default VLAN*
 
-![Additional Team Properties](task04-new-team-additional-properties.png)
+![Additional Team Properties](task4-new-team-additional-properties.png)
 
 **Configuration choices explained:**
 | Setting | Value | Why |
