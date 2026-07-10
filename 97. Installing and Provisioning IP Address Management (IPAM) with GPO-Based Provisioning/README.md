@@ -38,7 +38,7 @@ Using **Server Manager → Add Roles and Features Wizard**, select the **IP Addr
 - **Remote Server Administration Tools → Feature Administration Tools → IP Address Management (IPAM) Client**
 - **Role Administration Tools → DHCP Server Tools**
 
-![Install IPAM Feature](task01-install-ipam-feature.png)
+![Install IPAM Feature](task1-Install-IPAM.png)
 
 **Why:** IPAM Server has several prerequisites (.NET/WCF, IPAM Client, DHCP admin tools) that the wizard installs automatically, since IPAM needs to remotely query and configure DHCP/DNS servers over WMI/RPC and needs the client console to be manageable locally.
 
@@ -57,7 +57,7 @@ Launch **IPAM → Provision the IPAM server** from Server Manager to open the **
 - Create local security groups on the IPAM server for assigning administrator roles
 - Enable IP address tracking capability on the IPAM server
 
-![Provision IPAM Summary](task02-provision-ipam-summary.png)
+![Provision IPAM Summary](task1-provision-IPAM.png)
 
 **Why GPO-based provisioning:** It automates applying the firewall rules, permissions, and scheduled tasks that managed servers need to allow the IPAM server to query them — instead of manually configuring each DHCP/DNS/DC server's security settings by hand. Note the wizard's warning: **once you choose GPO-based provisioning, you cannot switch to manual provisioning** through the wizard again (though `Set-IpamConfiguration` can reverse it via PowerShell later).
 
@@ -72,7 +72,7 @@ Invoke-IpamGpoProvisioning -Domain tshoot.com -DomainController PDC.tshoot.com `
   -GpoPrefixName ipam_gpo -IpamServerFqdn ipam.tshoot.com -DelegatedGpoUser administrator@tshoot.com
 ```
 
-![Invoke-IpamGpoProvisioning](task03-invoke-ipamgpoprovisioning.png)
+![Invoke-IpamGpoProvisioning](task3-ps-command.png)
 
 **Parameter breakdown:**
 | Parameter | Purpose |
@@ -97,7 +97,7 @@ In the IPAM console, go to **Overview → Configure Server Discovery**. Select:
   - ☑ **DHCP server**
   - ☑ **DNS server**
 
-![Configure Server Discovery](task04-configure-server-discovery.png)
+![Configure Server Discovery](task3-ps-command.png)
 
 Note the informational callout: the **discovery schedule can be modified** by editing the `\Microsoft\Windows\IPAM\ServerDiscovery` task in **Task Scheduler** on the IPAM server (requires administrative privileges).
 
@@ -115,7 +115,7 @@ After configuring discovery, either wait for the scheduled run or manually trigg
 | IPAM ServerDiscovery task | Completed | Discovered servers are based on: [timestamp] |
 | IPAM ServerDiscovery task | Completed | Discovered servers are based on: [timestamp] |
 
-![Server Discovery Task Details](task05-server-discovery-task-details.png)
+![Server Discovery Task Details](task5-start-task-discovery.png)
 
 **Why:** This view confirms the discovery process actually completed successfully (rather than failing silently) and shows when the current list of discovered servers was last refreshed — important context before trusting the server inventory shown in IPAM.
 
@@ -145,7 +145,7 @@ As part of provisioning (Task 2), IPAM automatically creates local security grou
 - **Group scope:** **Universal**
 - **Group type:** **Security**
 
-![IPAMUG Security Group](task07-ipamug-security-group.png)
+![IPAMUG Security Group](task7-IPAM-security-group-created.png)
 
 **Why:** IPAM uses a set of built-in local security groups (such as IPAM Administrators, IPAM ASM Administrators, IPAM MSM Administrators, IPAM IP Audit Administrators, IPAM Users, and groups like `IPAMUG`) to control who can view or manage different areas of IPAM functionality — verifying they exist confirms provisioning completed correctly and gives you the groups needed to delegate access to other admins without granting full local admin rights on the IPAM server.
 
