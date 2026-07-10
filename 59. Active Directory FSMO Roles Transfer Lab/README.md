@@ -66,7 +66,7 @@ These steps are performed while **both DCs are online**.
 
 **Screenshot:**
 
-![Task 2 – Transfer PDC Role](1777374967493_task2-transfer-pdc-to-adc.png)
+![Task 2 – Transfer PDC Role](task2-transfer-pdc-to-adc.png)
 
 > ✅ **Expected Result:** PDC Emulator role moved to `ADC.test.local`.
 
@@ -82,7 +82,7 @@ These steps are performed while **both DCs are online**.
 
 **Screenshot:**
 
-![Task 3 – Transfer Infrastructure Role](1777374967494_task3-transfer-infastructure-to-adc.png)
+![Task 3 – Transfer Infrastructure Role](task3-transfer-infastructure-to-adc.png)
 
 > ✅ **Expected Result:** Infrastructure Master role moved to `ADC.test.local`.
 
@@ -100,7 +100,7 @@ Before transferring the Domain Naming Master role, you must point the management
 
 **Screenshot:**
 
-![Task 4 – Change Active Directory Focus](1777374967494_task4-change-active-dir.png)
+![Task 4 – Change Active Directory Focus](task4-change-active-dir.png)
 
 > ℹ️ Both `ADC.test.local` and `PDC.test.local` are visible as Global Catalog (GC) servers. The current focus is changed to ADC before proceeding.
 
@@ -115,7 +115,7 @@ Before transferring the Domain Naming Master role, you must point the management
 
 **Screenshot:**
 
-![Task 5 – Transfer Domain Naming Master](1777374967494_task5-transfer-domain-name-role.png)
+![Task 5 – Transfer Domain Naming Master](task5-transfer-domain-name-role.png)
 
 > ✅ **Expected Result:** Dialog reads *"The operations master was successfully transferred."*
 
@@ -133,7 +133,7 @@ The Active Directory Schema snap-in is not registered by default and must be ena
 
 **Screenshot:**
 
-![Task 6 – Register Schema DLL](1777374967495_task6-enable-schema-master-role.png)
+![Task 6 – Register Schema DLL](task6-enable-schema-master-role.png)
 
 > ⚠️ This step is required only once per machine. Without it, the Active Directory Schema snap-in will not appear in the MMC console.
 
@@ -150,7 +150,7 @@ The Active Directory Schema snap-in is not registered by default and must be ena
 
 **Screenshot:**
 
-![Task 7 – Add AD Schema Snap-in](1777374967495_task7-add-ad-schema.png)
+![Task 7 – Add AD Schema Snap-in](task7-add-ad-schema.png)
 
 > ℹ️ The description confirms: *"View and edit the Active Directory Schema."*
 
@@ -168,7 +168,7 @@ The Active Directory Schema snap-in is not registered by default and must be ena
 
 **Screenshot:**
 
-![Task 8 – Transfer Schema Master](1777374967496_task8-transfer-schema.png)
+![Task 8 – Transfer Schema Master](task8-transfer-schema.png)
 
 > ✅ **Expected Result:** Schema Master role transferred from `PDC.test.local` to `ADC.test.local`.
 
@@ -199,7 +199,7 @@ Move-ADDirectoryServerOperationMasterRole -Identity "pdc16" -OperationMasterRole
 
 **Screenshot:**
 
-![Task 9 – PowerShell Transfer](1777374967497_task9-transfer-by-cmd.png)
+![Task 9 – PowerShell Transfer](task9-transfer-by-cmd.png)
 
 > ℹ️ The cmdlet prompts confirmation for each role. Answer **Y** (or **A** for Yes to All) for each. All five roles are moved to `PDC16.company.local` in this example.
 
@@ -214,7 +214,7 @@ If you attempt a GUI transfer when the source DC is offline, you will encounter 
 
 **Screenshot:**
 
-![Task 10 – Transfer Error (DC Offline)](1777374967497_task10-transfer-error-because-down.png)
+![Task 10 – Transfer Error (DC Offline)](task10-transfer-error-because-down.png)
 
 > ⚠️ When the source DC is offline, a graceful transfer is impossible. You must perform a **seizure** instead (see Task 15).
 
@@ -231,7 +231,7 @@ netdom query fsmo
 
 **Screenshot:**
 
-![Task 11 – Verify FSMO with netdom](1777374967497_task11-verify.png)
+![Task 11 – Verify FSMO with netdom](task11-verify.png)
 
 **Expected Output:**
 ```
@@ -259,7 +259,7 @@ netdom query fsmo
 
 **Screenshot:**
 
-![Task 12 – Transfer Roles Back + Verify](1777374967498_task12-transfer-roles-by-powershell.png)
+![Task 12 – Transfer Roles Back + Verify](task12-transfer-roles-by-powershell.png)
 
 **Expected Output After Transfer:**
 ```
@@ -292,7 +292,7 @@ When the PDC is being decommissioned, use the AD DS Configuration Wizard with **
 
 **Screenshot:**
 
-![Task 13 – Force Remove PDC AD DS](1777374967498_task13-force-remove-pdc-ad.png)
+![Task 13 – Force Remove PDC AD DS](task13-force-remove-pdc-ad.png)
 
 > ⚠️ Force removal bypasses normal replication. Always transfer FSMO roles **before** demoting. If the DC was forcibly removed, run `ntdsutil` metadata cleanup on a surviving DC.
 
@@ -304,7 +304,7 @@ During the demotion, the wizard shows progress and warnings.
 
 **Screenshot:**
 
-![Task 14 – Demotion Progress](1777374967498_task14-demotion.png)
+![Task 14 – Demotion Progress](task14-demotion.png)
 
 **Key Warning:**
 > *"DNS Server service has been detected on this server. Any existing Active Directory integrated zones will be deleted during the removal of Active Directory Domain Services (AD DS) on this server. After the forced removal of AD DS, you should delete any existing DNS delegations pointing to this server."*
@@ -339,7 +339,7 @@ quit
 
 **Screenshot:**
 
-![Task 15 – Seize FSMO via ntdsutil](1777374967499_task15-seize.png)
+![Task 15 – Seize FSMO via ntdsutil](task15-seize.png)
 
 **Understanding the Output:**
 
