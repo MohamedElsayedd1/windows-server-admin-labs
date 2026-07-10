@@ -131,7 +131,7 @@ Once discovered, servers appear in **Server Inventory** with a default **Managea
 - **Server type:** ☑ DC, ☑ DNS server, ☑ DHCP server (unchecked: NPS server)
 - **Manageability status:** change to **Managed**
 
-![Add or Edit Server - Manageability](task06-add-edit-server-manageability.png)
+![Add or Edit Server - Manageability](task6-manage-server.png)
 
 **Why:** Discovery only *finds* candidate servers — IPAM will not actively poll or manage a server's configuration/events until its Manageability status is explicitly set to **Managed**. This is a deliberate safety gate so IPAM doesn't automatically start querying every discovered machine without administrator confirmation.
 
