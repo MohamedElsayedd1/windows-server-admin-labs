@@ -76,7 +76,7 @@
 4. Accept the prompt to also add **IIS Hostable Web Core** (required dependency).
 5. Click **Install** and wait for completion.
 
-![Install Work Folders Role Service](task1-install-workfolders-role.png)
+![Install Work Folders Role Service](task1-install-workfolder-role.png)
 
 > **What gets installed:** The `Work Folders` role service plus `IIS Hostable Web Core`. The latter is a lightweight web server that handles the HTTPS sync protocol between clients and the server — no full IIS installation is needed.
 
@@ -92,7 +92,7 @@
    - **Service status:** `Running`
 4. If it is not running, right-click → **Start**.
 
-![Windows Sync Share Service — Running](task1-enable-sync-share-service.png)
+![Windows Sync Share Service — Running](task1-enable-windows-task-shae.png)
 
 > `SyncShareSvc` is the core service that enables client devices to sync files from the file server. It must be running and set to Automatic before any client can connect.
 
