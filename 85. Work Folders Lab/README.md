@@ -76,7 +76,7 @@
 4. Accept the prompt to also add **IIS Hostable Web Core** (required dependency).
 5. Click **Install** and wait for completion.
 
-![Install Work Folders Role Service](images/task1-install-workfolders-role.png)
+![Install Work Folders Role Service](task1-install-workfolders-role.png)
 
 > **What gets installed:** The `Work Folders` role service plus `IIS Hostable Web Core`. The latter is a lightweight web server that handles the HTTPS sync protocol between clients and the server — no full IIS installation is needed.
 
@@ -92,7 +92,7 @@
    - **Service status:** `Running`
 4. If it is not running, right-click → **Start**.
 
-![Windows Sync Share Service — Running](images/task1-enable-sync-share-service.png)
+![Windows Sync Share Service — Running](task1-enable-sync-share-service.png)
 
 > `SyncShareSvc` is the core service that enables client devices to sync files from the file server. It must be running and set to Automatic before any client can connect.
 
@@ -115,7 +115,7 @@ In production, Work Folders requires **HTTPS** (port 443) and therefore needs a 
 4. Confirm the installation also includes: **Active Directory Certificate Services Tools** and **Certification Authority Management Tools** (RSAT components added automatically).
 5. Click **Install**.
 
-![Install Active Directory Certificate Services](images/task2-install-certificate-authority.png)
+![Install Active Directory Certificate Services](task2-install-certificate-authority.png)
 
 6. After installation, complete the **AD CS post-deployment configuration** (click the flag notification → **Configure Active Directory Certificate Services**), set it up as an **Enterprise Root CA**, and name it appropriately (e.g., `company-PDC16-CA`).
 
@@ -136,7 +136,7 @@ A **Sync Share** is the server-side folder that Work Folders manages. Each sync 
 4. Under **Location**, choose **Enter a local path** and type `E:\workfolders`.
 5. Click **Next**.
 
-![New Sync Share — Server and Path](images/task2-new-sync-share-server-path.png)
+![New Sync Share — Server and Path](task2-new-sync-share-server-path.png)
 
 > The wizard only lists servers that have the Work Folders role installed. You can also select an existing share from the list, but entering a local path lets you designate a dedicated folder (which will be created if it doesn't exist).
 
@@ -147,7 +147,7 @@ A **Sync Share** is the server-side folder that Work Folders manages. Each sync 
 7. Leave **Sync only the following subfolder** unchecked (sync the entire user folder).
 8. Click **Next**.
 
-![New Sync Share — User Folder Structure](images/task2-new-sync-share-user-folder-structure.png)
+![New Sync Share — User Folder Structure](task2-new-sync-share-user-folder-structure.png)
 
 **Step 2b-iii — Sync Share Name**
 9. Accept the default Sync Share name (derived from the path) or type a custom name, e.g., `workfolders`.
@@ -158,7 +158,7 @@ A **Sync Share** is the server-side folder that Work Folders manages. Each sync 
 12. Check **Disable inherited permissions and grant users exclusive access to their files** — this ensures each user can only see and access their own subfolder, not anyone else's.
 13. Click **Next**.
 
-![New Sync Share — Sync Access](images/task2-new-sync-share-sync-access.png)
+![New Sync Share — Sync Access](task2-new-sync-share-sync-access.png)
 
 **Step 2b-v — PC Security Policies (optional)**
 14. For this lab, leave **PC Security Policies** unconfigured (no encryption or screen lock requirements). In production you would check **Encrypt Work Folders** and set a lock-screen timeout for BYOD compliance.
@@ -186,7 +186,7 @@ In a production environment, Work Folders uses HTTPS (port 443) with a valid SSL
 4. Set its **Value data** to `1` (Hexadecimal).
 5. Click **OK**.
 
-![Registry — AllowUnsecureConnection = 1](images/task3-registry-allow-unsecure-connection.png)
+![Registry — AllowUnsecureConnection = 1](task3-registry-allow-unsecure-connection.png)
 
 6. Restart the **Windows Sync Share** service for the change to take effect:
    ```powershell
@@ -210,7 +210,7 @@ In a production environment, Work Folders uses HTTPS (port 443) with a valid SSL
    ```
 4. Click **Next**.
 
-![Client — Enter Work Folders URL](images/task4-client-set-workfolders-url.png)
+![Client — Enter Work Folders URL](task4-client-set-workfolders-url.png)
 
 > The client will contact the server at this URL and authenticate using the logged-in user's domain credentials. The server looks up which sync share the user belongs to and prepares their per-user subfolder.
 
@@ -228,7 +228,7 @@ In a production environment, Work Folders uses HTTPS (port 443) with a valid SSL
 4. Accept the security policy acknowledgment if prompted.
 5. Click **Set up Work Folders**.
 
-![Client — Work Folders Location and On-Demand Access](images/task5-client-workfolders-location.png)
+![Client — Work Folders Location and On-Demand Access](task5-client-workfolders-location.png)
 
 > **On-demand file access** means files appear as placeholders in File Explorer. Only files the user actually opens are downloaded to the local disk. The rest are always visible but take no space — similar to OneDrive's "Files On-Demand" feature.
 
@@ -242,7 +242,7 @@ In a production environment, Work Folders uses HTTPS (port 443) with a valid SSL
 3. Any file saved into `C:\Users\ahmed.abdo\Work Folders\` will automatically sync to `E:\workfolders\ahmed.abdo\` on PDC16.
 4. The same user's Work Folders on any other device pointed at the same URL will receive the file on its next sync.
 
-![Work Folders Syncing](images/task6-workfolders-syncing.png)
+![Work Folders Syncing](task6-workfolders-syncing.png)
 
 **Result:** Work Folders is fully configured and actively syncing. Files saved in the local Work Folders folder are uploaded to PDC16 in the background and available on any other device where the same user has set up Work Folders.
 
